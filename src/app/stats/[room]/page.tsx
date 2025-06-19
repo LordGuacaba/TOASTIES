@@ -1,12 +1,12 @@
 'use client'
 import StatTable from "@/components/Statsheet/StatTable";
-import { getRoomStats } from "@/utilities/actions";
+import { getStats } from "@/utilities/actions";
 import { Statline } from "@/utilities/statsheetTypes";
 import { MenuItem, Select, SelectChangeEvent, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
-    const [room, setRoom] = useState<number>(0);
+    const [room, setRoom] = useState<number>(-1);
     const [currentSheet, setCurrentSheet] = useState("Overall");
     const [sheets, setSheets] = useState<string[]>([]);
     const [statsheets, setStatsheets] = useState<Statline[][]>([]);
@@ -20,12 +20,12 @@ const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
     }, [params]);
 
     useEffect(() => {
-        const getStats = async() => {
-            const { writers, statsheets } = await getRoomStats(room);
+        const getStatsheets = async() => {
+            const { writers, statsheets } = await getStats(room);
             setSheets(writers);
             setStatsheets(statsheets)
         }
-        getStats();
+        getStatsheets();
     }, [room])
 
     const handleSheetChange = (event: SelectChangeEvent) => {

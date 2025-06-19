@@ -19,20 +19,16 @@ export async function addRoom() {
     
 }
 
-export async function getRoomStats(room: number) {
-    if (room === 0) {
+export async function getStats(room: number) {
+    if (room === -1) {
         return {
             writers: [],
             statsheets: []
         }
     }
-    const response = await axios.get(`${base_url}/roomstats/${room}`)
+    const response = await axios.get(`${base_url}/stats/${room}`)
         .catch((reason) => {console.log(`an error occured: ${reason}`); return})
     return response?.data as Statsheets;
-}
-
-export async function getCombinedStats() {
-
 }
 
 export async function submitPacket(room: number, writer: string, scoresheet: Scoresheet) {

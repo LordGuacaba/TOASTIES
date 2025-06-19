@@ -31,7 +31,7 @@ const RoomMenu = ({ text, roomCount, stats }: RoomMenuProps) => {
         for (let i=0; i<roomCount; i++) {
             items.push(<MenuItem key={i+1} onClick={menuNavigate(i+1)}>Room {i+1}</MenuItem>)
         }
-        if (stats) items.push(<MenuItem key="combined" href='/stats/combined'>Combined</MenuItem>)
+        if (stats) items.push(<MenuItem key="combined" onClick={menuNavigate(0)}>Combined</MenuItem>)
         return items;
     }
     
