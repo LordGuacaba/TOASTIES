@@ -22,7 +22,7 @@ const StatTable = ({ stats }: StatTableProps) => {
 
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: "60vw" }}>
+            <Table sx={{ minWidth: "60vw" }} size="small">
                 <TableHead>
                     <TableRow>
                         <TableCell align="center">Rank</TableCell>

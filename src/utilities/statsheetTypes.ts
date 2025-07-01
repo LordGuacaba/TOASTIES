@@ -23,9 +23,9 @@ export const points = (statline: Statline) => (
 
 export const ppg = (statline: Statline) => (
     statline.played > 0 ? (
-        15*statline.powers 
+        (15*statline.powers 
         + 10*statline.gets 
-        + -5*statline.negs
+        + -5*statline.negs)
         / (statline.played / 20)
     ) : 0
     

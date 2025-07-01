@@ -2,7 +2,7 @@
 import StatTable from "@/components/Statsheet/StatTable";
 import { getStats } from "@/utilities/actions";
 import { Statline } from "@/utilities/statsheetTypes";
-import { MenuItem, Select, SelectChangeEvent, Stack } from "@mui/material";
+import { Container, MenuItem, Select, SelectChangeEvent, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
@@ -10,6 +10,7 @@ const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
     const [currentSheet, setCurrentSheet] = useState("Overall");
     const [sheets, setSheets] = useState<string[]>([]);
     const [statsheets, setStatsheets] = useState<Statline[][]>([]);
+    const [loading, setLoading] = useState(false);
     
     useEffect(() => {
         const getRoomNumber = async() => {
@@ -21,9 +22,13 @@ const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
 
     useEffect(() => {
         const getStatsheets = async() => {
+            setLoading(true);
             const { writers, statsheets } = await getStats(room);
             setSheets(writers);
-            setStatsheets(statsheets)
+            setStatsheets(statsheets);
+            if (statsheets.length) {
+                setLoading(false);
+            }
         }
         getStatsheets();
     }, [room])
@@ -33,17 +38,26 @@ const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
     }
 
     return (
-        <Stack direction={"column"}>
-            <Select
-                value={currentSheet}
-                onChange={handleSheetChange}
-            >
-                {sheets.map((writer) => (
-                    <MenuItem key={writer} value={writer}>{writer}</MenuItem>
-                ))}
-            </Select>
-            <StatTable stats={statsheets.at(sheets.indexOf(currentSheet))} />
-        </Stack>
+        <Container maxWidth="xl" sx={{mb: "3vh"}}>
+            <Stack direction={"column"}>
+                <Typography variant="h2" align="center" sx={{mb: "1vh"}}>
+                    Tournament Stats - {room === 0 ? "Combined" : `Room ${room}`}
+                </Typography>
+                <Select
+                    value={currentSheet}
+                    onChange={handleSheetChange}
+                    sx={{mb: "1vh", maxWidth: "30vw"}}
+                >
+                    {sheets.map((writer) => (
+                        <MenuItem key={writer} value={writer}>{writer}</MenuItem>
+                    ))}
+                </Select>
+                {loading ? 
+                    <Skeleton variant="rectangular" height={"60vh"} />
+                    : <StatTable stats={statsheets.at(sheets.indexOf(currentSheet))} />
+                }
+            </Stack>
+        </Container>
     )
 }
 
