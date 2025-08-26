@@ -2,7 +2,7 @@ import axios from "axios"
 import { Scoresheet } from "./scoresheetTypes";
 import { Statsheets } from "./statsheetTypes";
 
-const base_url = "http://localhost:8000";
+const base_url = "http://localhost:8000"; // Default host for API
 
 export async function rooms() {
     const response = await axios.get(`${base_url}/rooms`);

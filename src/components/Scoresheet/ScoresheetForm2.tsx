@@ -1,7 +1,7 @@
 'use client'
 import { Question } from "@/utilities/scoresheetTypes"
 import { Button, Container, Stack, Typography } from "@mui/material"
-import { useState } from "react"
+import { useState, KeyboardEvent } from "react"
 import QuestionEntry from "./QuestionEntry"
 import { submitPacket } from "@/utilities/actions"
 
@@ -39,10 +39,16 @@ const ScoresheetForm = (props: ScoresheetProps) => {
         setResults(newResults);
     }
 
+    const handleKeyboardAddQuestion = (e: KeyboardEvent) => {
+        if (e.key === "Enter" && e.shiftKey) {
+            addQuestion();
+        }
+    }
+
     const questionEntryProps = (question: Question, index: number) => ({
         question,
         handleDelete: () => deleteQuestion(index),
-        startLive: question.number === results.length,
+        roster: props.roster,
     });
 
     const onSubmitClick = async() => {
@@ -60,7 +66,7 @@ const ScoresheetForm = (props: ScoresheetProps) => {
     }
 
     return (
-        <Container>
+        <Container onKeyDown={handleKeyboardAddQuestion}>
             <Stack spacing={3}>
                 <Typography variant="h3" fontWeight={'bold'}>
                     Packet writer: {props.writer}

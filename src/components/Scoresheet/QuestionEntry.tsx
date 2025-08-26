@@ -8,9 +8,10 @@ import BuzzValue from "./BuzzValue";
 type QuestionEntryProps = {
     question: Question,
     handleDelete: () => void,
+    roster: string[],
 }
 
-const QuestionEntry = ({ question, handleDelete } : QuestionEntryProps) => {
+const QuestionEntry = ({ question, handleDelete, roster } : QuestionEntryProps) => {
     const [buzzes, setBuzzes] = useState(question.buzzes);
     const updateBuzzes = () => { setBuzzes([...question.buzzes]) }
 
@@ -20,7 +21,8 @@ const QuestionEntry = ({ question, handleDelete } : QuestionEntryProps) => {
             onDelete: () => {
                 question.buzzes.splice(question.buzzes.indexOf(buzz), 1);
                 updateBuzzes();
-            }
+            },
+            roster,
         }
     }
 
@@ -38,7 +40,7 @@ const QuestionEntry = ({ question, handleDelete } : QuestionEntryProps) => {
                 {buzzes.map((buzz, index) => (
                     <BuzzValue key={index} {...getBuzzValueProps(buzz)} />
                 ))}
-                <BuzzEntry addBuzz={addBuzz} />
+                <BuzzEntry addBuzz={addBuzz} roster={roster} />
             </Stack>
             <Button onClick={handleDelete}>X</Button>
         </Stack>
