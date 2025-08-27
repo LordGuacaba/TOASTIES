@@ -43,9 +43,9 @@ const RoomMenu = ({ text, roomCount, stats }: RoomMenuProps) => {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
-                variant='outlined'
+                variant='contained'
                 color='secondary'
-                sx={{margin: 1}}
+                sx={{marginX: 1.5}}
             >
                 {text}
             </Button>

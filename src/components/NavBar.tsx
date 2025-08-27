@@ -39,7 +39,7 @@ const NavBar = () => {
                     <Image src={toast} alt="tasty buttered toast" height="50"/>
                 </Link>
                 <Link href="/">
-                    <Typography variant="h5" sx={{margin: 1, marginLeft: 2}}>
+                    <Typography variant="h5" sx={{margin: 1, marginLeft: 2, marginRight: 5}}>
                         TOASTIES
                     </Typography>
                 </Link>
@@ -47,7 +47,7 @@ const NavBar = () => {
                 <RoomMenu text="Stats" roomCount={roomCount} stats/>
                 <Button 
                     loading={loading} 
-                    variant="contained" 
+                    variant="outlined" 
                     color="secondary"
                     onClick={handleAddRoom}
                     sx={{margin: 1}}
