@@ -11,7 +11,6 @@ const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
     const [sheets, setSheets] = useState<string[]>([]);
     const [statsheets, setStatsheets] = useState<Statline[][]>([]);
     const [loading, setLoading] = useState(false);
-    const [noStats, setNoStats] = useState(false);
     
     useEffect(() => {
         const getRoomNumber = async() => {
@@ -27,10 +26,7 @@ const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
             const { writers, statsheets } = await getStats(room);
             setSheets(writers);
             setStatsheets(statsheets);
-            setLoading(false)
-            if (!writers || writers.length === 0) {
-                 setNoStats(true)
-            }
+            setLoading(false);
         }
         getStatsheets();
     }, [room])
@@ -45,23 +41,25 @@ const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
                 <Typography variant="h2" align="center" sx={{mb: "1vh"}}>
                     Tournament Stats - {room === 0 ? "Combined" : `Room ${room}`}
                 </Typography>
-                { noStats ?
-                    <p>No stats right now! Check back later when scores have been entered</p>
-                    : <><Select
-                        value={currentSheet}
-                        onChange={handleSheetChange}
-                        sx={{mb: "1vh", maxWidth: "30vw"}}
-                    >
-                        {sheets.map((writer) => (
-                            <MenuItem key={writer} value={writer}>{writer}</MenuItem>
-                        ))}
-                    </Select>
-                    {loading ? 
-                        <Skeleton variant="rectangular" height={"60vh"} />
-                        : <StatTable stats={statsheets.at(sheets.indexOf(currentSheet))} />
-                    }
+                { loading ?
+                    <Skeleton variant="rectangular" height={"60vh"} />
+                    : <>
+                        {sheets.length === 0 ? 
+                            <p>No stats right now! Check back later when scores have been entered</p>
+                            : <><Select
+                            value={currentSheet}
+                            onChange={handleSheetChange}
+                            sx={{mb: "1vh", maxWidth: "30vw"}}
+                            >
+                            {sheets.map((writer) => (
+                                <MenuItem key={writer} value={writer}>{writer}</MenuItem>
+                            ))}
+                            </Select>
+                            <StatTable stats={statsheets.at(sheets.indexOf(currentSheet))} />
+                            </>
+                        }
                     </>
-                    }
+                }
             </Stack>
         </Container>
     )
