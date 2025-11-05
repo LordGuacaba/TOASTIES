@@ -2,7 +2,7 @@ import axios from "axios"
 import { Scoresheet } from "./scoresheetTypes";
 import { Statsheets } from "./statsheetTypes";
 
-const base_url = "http://localhost:8000"; // Default host for API
+const base_url = "http://10.117.5.224:8000"; // Default host for API
 
 export async function rooms() {
     const response = await axios.get(`${base_url}/rooms`);
@@ -16,7 +16,6 @@ export async function addRoom() {
     } else {
         return response.data["message"]
     }
-    
 }
 
 export async function getStats(room: number) {
@@ -28,6 +27,12 @@ export async function getStats(room: number) {
     }
     const response = await axios.get(`${base_url}/stats/${room}`)
         .catch((reason) => {console.log(`an error occured: ${reason}`); return})
+    if (response?.status !== 200) {
+        return {
+            writers: [],
+            statsheets: []
+        } as Statsheets
+    }
     return response?.data as Statsheets;
 }
 
