@@ -12,11 +12,11 @@ const BuzzValue = ( {buzz, onDelete}: BuzzValueProps ) => {
 
     return (
         <Stack direction="row">
-            <Typography variant="body1" sx={{padding: "0 1.5vw"}}>
+            <Typography variant="body1" sx={{padding: "0 1.5vw", width: 150}}>
                 {buzz.player}
             </Typography>
             <Divider orientation="vertical" flexItem />
-            <Typography variant="body1" sx={{padding: "0 1.5vw"}}>
+            <Typography variant="body1" sx={{padding: "0 1vw", width: 50}}>
                 {buzz.points}
             </Typography>
             <Divider orientation="vertical" flexItem />

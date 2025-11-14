@@ -49,6 +49,7 @@ const ScoresheetForm = (props: ScoresheetProps) => {
         question,
         handleDelete: () => deleteQuestion(index),
         roster: props.roster,
+        current: question.number === results.length,
     });
 
     const onSubmitClick = async() => {

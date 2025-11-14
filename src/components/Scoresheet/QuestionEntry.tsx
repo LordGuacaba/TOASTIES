@@ -9,10 +9,12 @@ type QuestionEntryProps = {
     question: Question,
     handleDelete: () => void,
     roster: string[],
+    current: boolean,
 }
 
-const QuestionEntry = ({ question, handleDelete, roster } : QuestionEntryProps) => {
+const QuestionEntry = ({ question, handleDelete, roster, current } : QuestionEntryProps) => {
     const [buzzes, setBuzzes] = useState(question.buzzes);
+    const [active, setActive] = useState(current);
     const updateBuzzes = () => { setBuzzes([...question.buzzes]) }
 
     const getBuzzValueProps = (buzz: Buzz) => {
@@ -40,9 +42,12 @@ const QuestionEntry = ({ question, handleDelete, roster } : QuestionEntryProps) 
                 {buzzes.map((buzz, index) => (
                     <BuzzValue key={index} {...getBuzzValueProps(buzz)} />
                 ))}
-                <BuzzEntry addBuzz={addBuzz} roster={roster} />
+                { current || active ? <BuzzEntry addBuzz={addBuzz} roster={roster} onUnfocus={() => setActive(false)} /> : <></>}
             </Stack>
-            <Button onClick={handleDelete}>X</Button>
+            <Stack>
+                <Button onClick={() => setActive(true)}>E</Button>
+                <Button onClick={handleDelete}>X</Button>
+            </Stack>
         </Stack>
     )
 }

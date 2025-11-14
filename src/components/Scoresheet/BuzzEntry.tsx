@@ -6,9 +6,10 @@ import { ChangeEvent, KeyboardEvent, useState } from "react";
 type BuzzEntryProps = {
     addBuzz: (buzz: Buzz) => void,
     roster: string[],
+    onUnfocus: () => void
 }
 
-const BuzzEntry = ( { addBuzz, roster }: BuzzEntryProps) => {
+const BuzzEntry = ( { addBuzz, roster, onUnfocus }: BuzzEntryProps) => {
     const [player, setPlayer] = useState('');
     const [points, setPoints] = useState<Points>(10);
     const [selecting, setSelecting] = useState(true);
@@ -54,7 +55,7 @@ const BuzzEntry = ( { addBuzz, roster }: BuzzEntryProps) => {
             default:
                 return undefined
         }
-    }
+    } 
 
     const renderAutocompleteTextField = (params: AutocompleteRenderInputParams) => (
         <TextField
@@ -72,6 +73,7 @@ const BuzzEntry = ( { addBuzz, roster }: BuzzEntryProps) => {
             direction={'row'} 
             sx={{padding: 0.5, border: "1px solid black", borderRadius: 2}}
             onKeyDown={handleKeyPresses}
+            onBlur={onUnfocus}
         >
             <Autocomplete
                 autoSelect
