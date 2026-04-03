@@ -1,9 +1,11 @@
 'use client'
-import { Chip, TextField, Stack, Button, Container } from "@mui/material";
+import { getRoster } from "@/utilities/actions";
+import { Chip, TextField, Stack, Button, Container, Skeleton } from "@mui/material";
 import { Field, FieldArray, Form, Formik } from "formik";
-import { KeyboardEvent } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 
 type ScoresheetFormProps = {
+    room: number | null,
     setScoresheetValues: (roster: ScoresheetValues) => void,
 }
 
@@ -13,7 +15,8 @@ export type ScoresheetValues = {
     roster: string[],
 }
 
-const ScoresheetStartForm = ({ setScoresheetValues }: ScoresheetFormProps) => {
+const ScoresheetStartForm = ({ room, setScoresheetValues }: ScoresheetFormProps) => {
+    const [roster, setRoster] = useState<string[] | null>(null)
 
     const handleNameSubmit = (push: (name: string) => void) => {
         const enterName = document.querySelector("#enterName") as HTMLTextAreaElement;
@@ -23,17 +26,28 @@ const ScoresheetStartForm = ({ setScoresheetValues }: ScoresheetFormProps) => {
         }
     }
 
+    useEffect(() => {
+        const prevRoster = async() => {
+            if (room != null) {
+            const roster = await(getRoster(room));
+            setRoster(roster)
+            }
+        }
+        prevRoster()
+    }, [room])
+
     const FormTextField = (props: {label: string}) => (
         <TextField {...props} />
       );
 
     return (
         <Container maxWidth='xs'>
+            {room && roster ? 
             <Formik
                 initialValues={{
                     writer: '',
                     reader: '',
-                    roster: [],
+                    roster: roster,
                 }}
                 onSubmit={(values) => {
                     setScoresheetValues(values);
@@ -81,7 +95,7 @@ const ScoresheetStartForm = ({ setScoresheetValues }: ScoresheetFormProps) => {
                     </Stack>
                 </Form>
             )}
-            </Formik>
+            </Formik> : <Skeleton></Skeleton>}
         </Container>
     )
 }

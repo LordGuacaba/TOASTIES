@@ -20,7 +20,7 @@ const ScoresPage = ({ params }: {params: Promise<{room: number}>}) => {
         <Container>
             {scoresheetValues ? 
                 <ScoresheetForm room={room ?? 0} {...scoresheetValues}/>
-                : <ScoresheetStartForm setScoresheetValues={setScoresheetValues}/>
+                : <ScoresheetStartForm room={room} setScoresheetValues={setScoresheetValues}/>
             }
         </Container>
     )
