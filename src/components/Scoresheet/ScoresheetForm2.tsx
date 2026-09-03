@@ -3,7 +3,7 @@ import { Question } from "@/utilities/scoresheetTypes"
 import { Button, Container, Stack, Typography } from "@mui/material"
 import { useState, KeyboardEvent } from "react"
 import QuestionEntry from "./QuestionEntry"
-import { submitPacket } from "@/utilities/actions"
+import { submitPacket } from "@/utilities/toastiesActions"
 
 type ScoresheetProps = {
     room: number,

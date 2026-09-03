@@ -1,6 +1,6 @@
 'use client'
 
-import { rooms, addRoom } from "@/utilities/actions";
+import { rooms, addRoom } from "@/utilities/toastiesActions";
 import { Alert, AppBar, Button, Snackbar, Toolbar, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import RoomMenu from "./RoomMenu";

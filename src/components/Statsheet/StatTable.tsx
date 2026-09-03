@@ -1,4 +1,4 @@
-import { points, ppg, Statline } from "@/utilities/statsheetTypes"
+import { points, ppg, Statline } from "@/utilities/types"
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 
 type StatTableProps = {

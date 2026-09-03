@@ -1,7 +1,7 @@
 'use client'
 import StatTable from "@/components/Statsheet/StatTable";
-import { getStats } from "@/utilities/actions";
-import { Statline } from "@/utilities/statsheetTypes";
+import { getStats } from "@/utilities/toastiesActions";
+import { Statline } from "@/utilities/types";
 import { Container, MenuItem, Select, SelectChangeEvent, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
