@@ -1,15 +1,15 @@
 'use client'
 import StatTable from "@/components/Statsheet/StatTable";
 import { getStats } from "@/utilities/toastiesActions";
-import { Statline } from "@/utilities/types";
+import { Statsheet } from "@/utilities/types";
 import { Container, MenuItem, Select, SelectChangeEvent, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
     const [room, setRoom] = useState<number>(-1);
     const [currentSheet, setCurrentSheet] = useState("Overall");
-    const [sheets, setSheets] = useState<string[]>([]);
-    const [statsheets, setStatsheets] = useState<Statline[][]>([]);
+    const [writers, setWriters] = useState<string[]>([]);
+    const [statsheets, setStatsheets] = useState<Statsheet[]>([]);
     const [loading, setLoading] = useState(false);
     
     useEffect(() => {
@@ -23,8 +23,8 @@ const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
     useEffect(() => {
         const getStatsheets = async() => {
             setLoading(true);
-            const { writers, statsheets } = await getStats(room);
-            setSheets(writers);
+            const statsheets = await getStats(room);
+            setWriters(statsheets.map(s => s.writer))
             setStatsheets(statsheets);
             setLoading(false);
         }
@@ -44,18 +44,18 @@ const StatsPage = ({ params }: {params: Promise<{room: number}>}) => {
                 { loading ?
                     <Skeleton variant="rectangular" height={"60vh"} />
                     : <>
-                        {sheets.length === 0 ? 
+                        {statsheets.length === 0 ? 
                             <p>No stats right now! Check back later when scores have been entered</p>
                             : <><Select
                             value={currentSheet}
                             onChange={handleSheetChange}
                             sx={{mb: "1vh", maxWidth: "30vw"}}
                             >
-                            {sheets.map((writer) => (
+                            {writers.map((writer) => (
                                 <MenuItem key={writer} value={writer}>{writer}</MenuItem>
                             ))}
                             </Select>
-                            <StatTable stats={statsheets.at(sheets.indexOf(currentSheet))} />
+                            <StatTable stats={statsheets.at(writers.indexOf(currentSheet))?.stats} />
                             </>
                         }
                     </>

@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import { toastTheme } from "@/utilities/toastThemes";
 import { Box, ThemeProvider } from "@mui/material";
+import ToastProvider from "@/context/ToastProvider";
 
 
 const geistSans = Geist({
@@ -32,9 +33,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider theme={toastTheme}>
-          <NavBar/>
-          <Box height={'3vh'}/>
-          {children}
+          <ToastProvider>
+            <NavBar/>
+            <Box height={'3vh'}/>
+            {children}
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>
