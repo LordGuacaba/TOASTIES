@@ -6,7 +6,6 @@ import { toastTheme } from "@/utilities/toastThemes";
 import { Box, ThemeProvider } from "@mui/material";
 import ToastProvider from "@/context/ToastProvider";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -34,8 +33,8 @@ export default function RootLayout({
       >
         <ThemeProvider theme={toastTheme}>
           <ToastProvider>
-            <NavBar/>
-            <Box height={'3vh'}/>
+            <NavBar />
+            <Box height={"3vh"} />
             {children}
           </ToastProvider>
         </ThemeProvider>
