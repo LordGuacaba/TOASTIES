@@ -1,34 +1,36 @@
 "use client";
-import { Buzz, Question } from "@/utilities/types";
+import { Buzz } from "@/utilities/types";
 import { Button, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import BuzzEntry from "./BuzzEntry";
 import BuzzValue from "./BuzzValue";
 
 type QuestionEntryProps = {
-  question: Question;
+  number: number;
+  buzzes: Buzz[];
   handleDelete: () => void;
   roster: string[];
   current: boolean;
 };
 
 const QuestionEntry = ({
-  question,
+  number,
+  buzzes,
   handleDelete,
   roster,
   current,
 }: QuestionEntryProps) => {
-  const [buzzes, setBuzzes] = useState(question.buzzes);
+  const [displayBuzzes, setDisplayBuzzes] = useState(buzzes);
   const [active, setActive] = useState(current);
   const updateBuzzes = () => {
-    setBuzzes([...question.buzzes]);
+    setDisplayBuzzes([...buzzes]);
   };
 
   const getBuzzValueProps = (buzz: Buzz) => {
     return {
       buzz,
       onDelete: () => {
-        question.buzzes.splice(question.buzzes.indexOf(buzz), 1);
+        buzzes.splice(buzzes.indexOf(buzz), 1);
         updateBuzzes();
       },
       roster,
@@ -36,17 +38,17 @@ const QuestionEntry = ({
   };
 
   const addBuzz = (buzz: Buzz) => {
-    question.buzzes.push(buzz);
+    buzzes.push(buzz);
     updateBuzzes();
   };
 
   return (
     <Stack direction={"row"} spacing={2}>
       <Typography variant="h6" fontWeight={"bold"}>
-        {question.number}
+        {number}
       </Typography>
       <Stack spacing={1}>
-        {buzzes.map((buzz, index) => (
+        {displayBuzzes.map((buzz, index) => (
           <BuzzValue key={index} {...getBuzzValueProps(buzz)} />
         ))}
         {current || active ? (

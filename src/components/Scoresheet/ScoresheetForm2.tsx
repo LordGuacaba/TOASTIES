@@ -1,5 +1,5 @@
 "use client";
-import { Question, Scoresheet } from "@/utilities/types";
+import { Buzz, Scoresheet } from "@/utilities/types";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { useState, KeyboardEvent, use } from "react";
 import QuestionEntry from "./QuestionEntry";
@@ -13,28 +13,18 @@ type ScoresheetProps = {
   roster: string[];
 };
 
-const genericQuestion = (number: number) => ({
-  number,
-  buzzes: [],
-});
-
 const ScoresheetForm = (props: ScoresheetProps) => {
-  const [results, setResults] = useState<Question[]>([genericQuestion(1)]);
+  const [results, setResults] = useState<Buzz[][]>([]);
   const [submitLoading, setSubmitLoading] = useState(false);
   const { toast } = use(ToastContext);
+  const [invalidToast, setInvalidToast] = useState(false);
 
   const addQuestion = () => {
-    const question = genericQuestion(results.length + 1);
-    setResults([...results, question]);
+    setResults([...results, []]);
   };
 
   const deleteQuestion = (index: number) => {
     const newResults = results.toSpliced(index, 1);
-    newResults.forEach((question, ind) => {
-      if (ind >= index) {
-        question.number--;
-      }
-    });
     setResults(newResults);
   };
 
@@ -44,14 +34,19 @@ const ScoresheetForm = (props: ScoresheetProps) => {
     }
   };
 
-  const questionEntryProps = (question: Question, index: number) => ({
-    question,
+  const questionEntryProps = (question: Buzz[], index: number) => ({
+    number: index+1,
+    buzzes: question,
     handleDelete: () => deleteQuestion(index),
     roster: props.roster,
-    current: question.number === results.length,
+    current: index+1 === results.length,
   });
 
   const onSubmitClick = async () => {
+    if (invalidToast || toast == undefined) {
+        setInvalidToast(true);
+        return;
+    }
     const scoresheet: Scoresheet = {
       toast: toast?.id,
       room: props.room,
@@ -63,7 +58,7 @@ const ScoresheetForm = (props: ScoresheetProps) => {
     setSubmitLoading(true);
     console.log(props.room);
     console.log(props.writer);
-    const success = await submitPacket(props.room, props.writer, scoresheet);
+    const success = await submitPacket(scoresheet);
     console.log(success);
     setSubmitLoading(false);
   };
